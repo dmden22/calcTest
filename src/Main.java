@@ -3,6 +3,12 @@ import java.util.Scanner;
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
+    /*enum Rim{
+        I(1),II(2);
+        Rim (int value){
+            this.value=value;
+        }
+    }*/
     public static int getCalcResult (int a, int b, char operation){
         int result = 0;
         switch (operation) {
@@ -63,44 +69,57 @@ public class Main {
         }
         return arabResult;
     }
+    public static String rimL1(int input){
+        switch (input){
+            case 1: return "I";
+            case 2: return "II";
+            case 3: return "III";
+            case 4: return "IV";
+            case 5: return "V";
+            case 6: return "VI";
+            case 7: return "VII";
+            case 8: return "VIII";
+            case 9: return "IX";
+            default: return "";
+        }
+    }
+    public static String rimL10(int input){
+        switch (input){
+            case 1: return "X";
+            case 2: return "XX";
+            case 3: return "XXX";
+            case 4: return "XL";
+            case 5: return "L";
+            case 6: return "LX";
+            case 7: return "LXX";
+            case 8: return "LXXX";
+            case 9: return "XC";
+            default: return "";
+        }
+    }
+    public static String rimL100(int input){
+        switch (input){
+            case 1: return "C";
+            case 2: return "CC";
+            case 3: return "CCC";
+            case 4: return "CD";
+            case 5: return "D";
+            case 6: return "DC";
+            case 7: return "DCC";
+            case 8: return "DCCC";
+            case 9: return "CM";
+            default: return "";
+        }
+    }
     public static String arabToRim(int a){
-        if (a<1) return "Результат операция над Римскими цифрами меньше 1. Не соответствует ТЗ";
+        //if (a<1) return "Результат операция над Римскими цифрами меньше 1. Не соответствует ТЗ";
+        if (a<1) throw new ArithmeticException("Пункт 10 ТЗ");
         String result = "";
-        for (int i = 0; i<a/100; i++){
-            result += "C";
-        }
-        for (int i = 0; i<(a%100)/10; i++) {
-            result += "X";
-        }
-        switch (a%10){
-            case 1:
-                result+="I";
-                break;
-            case 2:
-                result+="II";
-                break;
-            case 3:
-                result+="III";
-                break;
-            case 4:
-                result+="IV";
-                break;
-            case 5:
-                result+="V";
-                break;
-            case 6:
-                result+="VI";
-                break;
-            case 7:
-                result+="VII";
-                break;
-            case 8:
-                result+="VIII";
-                break;
-            case 9:
-                result+="IX";
-                break;
-        }
+
+        result+=rimL100(a/100);
+        result+=rimL10((a%100)/10);
+        result+=rimL1((a%10)/1);
+
         return result;
     }
     public static String calc(String input){
@@ -128,24 +147,27 @@ public class Main {
             aMass = aMass + mass[i];
         }
         if (operation=='0') {
-            return "Арифметической операции +-/* НЕ найдено \n";
+            //return "Арифметической операции +-/* НЕ найдено \n";
+            throw new ArithmeticException("Арифметической операции +-/* НЕ найдено");
         }
 
         if (Main.isRim(aMass)&&Main.isRim(bMass)){
-            if (rimToArab(aMass)>10 || rimToArab(bMass)>10) return "Римские цифры больше 10! Не соотвествует ТЗ.";
+            if (rimToArab(aMass)>10 || rimToArab(bMass)>10) throw new ArithmeticException("Пункт 7 ТЗ");
             return arabToRim(getCalcResult(Main.rimToArab(aMass),Main.rimToArab(bMass),operation));
         }
         if (Main.isRim(aMass)^Main.isRim(bMass)){
-            return "Написаны арабские и римские - НЕДОПУСТИМО по ТЗ";
+            //return "Написаны арабские и римские - НЕДОПУСТИМО по ТЗ";
+            throw new ArithmeticException("Написаны арабские и римские.");
         }
 
         try {
             a = Integer.parseInt(aMass);
             b = Integer.parseInt(bMass);
-            if (a<1 || a>10 || b<1 || b>10) return "Недопустимые значение арабских цифр! Не соответствует ТЗ";
+            if (a<1 || a>10 || b<1 || b>10) throw new ArithmeticException("Пункт 7 ТЗ");
             result = getCalcResult(a,b,operation);
         } catch (NumberFormatException  e){
-            return "Недопустимые значения!";
+            //return "Недопустимые значения!";
+            System.out.println("Ошибка: " + e.getMessage());
         }
 
         return Integer.toString(result);
